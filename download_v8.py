@@ -12,23 +12,46 @@ import re
 
 def get_download_links_with_curl(detail_url):
     """
-    使用curl从详情页获取下载链接
+    从详情页获取下载链接 (新结构: /dls/<code>.html → JS 跳转到 quark/139)
+    优先选 rmk (夸克 MP3),其次 rwk (夸克 WAV),再退到 rym/ryw (139.com)
     """
     try:
-        # 使用curl获取详情页内容并提取下载链接
-        cmd = f'curl -s "{detail_url}" | grep download | grep mp3'
+        from urllib.parse import urljoin
 
-        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        # 抓详情页
+        result = subprocess.run(
+            ['curl', '-s', detail_url],
+            capture_output=True, text=True
+        )
+        html = result.stdout
 
-        # 提取href中的链接
-        matches = re.findall(r'href="(https://[^"]+)"', result.stdout)
+        # 找所有 /dls/ 链接
+        dls_paths = re.findall(r'href="(/dls/[^"]+\.html)"', html)
+        if not dls_paths:
+            return []
 
-        return matches
+        # 按偏好排序: rmk(夸克MP3) > rwk(夸克WAV) > 其它
+        def rank(path):
+            if 'rmk' in path: return 0
+            if 'rwk' in path: return 1
+            if 'rym' in path: return 2
+            if 'ryw' in path: return 3
+            return 4
+        dls_paths.sort(key=rank)
+        dls_url = urljoin(detail_url, dls_paths[0])
+
+        # /dls/ 页是一段 JS 跳转,提取真实 URL
+        result2 = subprocess.run(
+            ['curl', '-s', dls_url],
+            capture_output=True, text=True
+        )
+        m = re.search(r"window\.location\.href\s*=\s*['\"]([^'\"]+)['\"]", result2.stdout)
+        return [m.group(1)] if m else []
 
     except Exception as e:
         print(f"获取下载链接时出错: {e}")
         return []
-## print(get_download_links_with_curl("https://www.xmwsyy.com/mscdetail/133187.html"))
+## print(get_download_links_with_curl("https://www.xmwsyy.com/song/taylorswift-father-figure.html"))
 
 def initialize_browser(download_folder="downloads"):
     """Initialize and return a Chrome browser with saved cookies if available"""
@@ -75,9 +98,9 @@ def initialize_browser(download_folder="downloads"):
 def download_song(driver, song_name):
     """Download a single song using the existing browser session"""
     try:
-        # Go to search page and input song name
-        driver.get("https://www.xmwsyy.com/index/search/")
-        
+        # 站点已改: /index/search/ 直接 GET 会 404,搜索框现在在首页上
+        driver.get("https://www.xmwsyy.com/")
+
         # Wait for search input to load and enter song name
         search_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "edtSearch"))
@@ -85,10 +108,10 @@ def download_song(driver, song_name):
         search_input.clear()
         search_input.send_keys(song_name)
         search_input.send_keys(Keys.RETURN)
-        
-        # Wait for search results - adjusted selector based on actual HTML structure
+
+        # 详情页 URL 已改为 /song/<slug>.html, 主结果包在 <article> 内
         result_link = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "ul > a[href*='/mscdetail/']"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "article a[href*='/song/']"))
         )
         
         link_url = result_link.get_attribute("href")
