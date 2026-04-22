@@ -28,7 +28,7 @@ def get_download_links_with_curl(detail_url):
     except Exception as e:
         print(f"获取下载链接时出错: {e}")
         return []
-## print(get_download_links_with_curl("https://www.xmwav.com/mscdetail/133187.html"))
+## print(get_download_links_with_curl("https://www.xmwsyy.com/mscdetail/133187.html"))
 
 def initialize_browser(download_folder="downloads"):
     """Initialize and return a Chrome browser with saved cookies if available"""
@@ -76,7 +76,7 @@ def download_song(driver, song_name):
     """Download a single song using the existing browser session"""
     try:
         # Go to search page and input song name
-        driver.get("https://www.xmwav.com/index/search/")
+        driver.get("https://www.xmwsyy.com/index/search/")
         
         # Wait for search input to load and enter song name
         search_input = WebDriverWait(driver, 10).until(

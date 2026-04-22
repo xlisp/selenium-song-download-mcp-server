@@ -20,5 +20,5 @@ def get_download_links_with_curl(detail_url):
         print(f"获取下载链接时出错: {e}")
         return []
 
-print(get_download_links_with_curl("https://www.xmwav.com/mscdetail/133187.html"))
+print(get_download_links_with_curl("https://www.xmwsyy.com/mscdetail/133187.html"))
 

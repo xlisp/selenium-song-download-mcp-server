@@ -12,7 +12,7 @@ pip install selenium
 ```
 $ python download_v6_success_single.py
 Enter the name of the song to download: 女人花
-Found song link: https://www.xmwav.com/mscdetail/132679.html
+Found song link: https://www.xmwsyy.com/mscdetail/132679.html
 ```
 
 * download batch
@@ -29,4 +29,3 @@ $  python ./download_v8.py
 ```
 https://juicy-j-feat-kevin-gates-future-and-sage-the-gemini-payback.hydr0.org/
 ```
-

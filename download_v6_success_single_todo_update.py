@@ -54,7 +54,7 @@ def download_song(driver, song_name):
     """Download a single song using the existing browser session"""
     try:
         # Go to search page and input song name
-        driver.get("https://www.xmwav.com/index/search/")
+        driver.get("https://www.xmwsyy.com/index/search/")
         
         # Wait for search input to load and enter song name
         search_input = WebDriverWait(driver, 10).until(

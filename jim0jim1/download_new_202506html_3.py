@@ -10,7 +10,7 @@ import re
 
 def download_mp3(song_name, download_folder="downloads"):
     """
-    Downloads an MP3 from xmwav.com based on the song name.
+    Downloads an MP3 from xmwsyy.com based on the song name.
 
     Args:
         song_name: The name of the song to search for
@@ -31,7 +31,7 @@ def download_mp3(song_name, download_folder="downloads"):
 
     try:
         # Step 1: Go to search page and input song name
-        driver.get("https://www.xmwav.com/index/search/")
+        driver.get("https://www.xmwsyy.com/index/search/")
 
         # Wait for search input to load and enter song name
         search_input = WebDriverWait(driver, 10).until(

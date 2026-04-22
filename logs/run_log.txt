@@ -12,19 +12,19 @@ Enter the path to the file containing song names (one per line): aaa.txt
 Found 3 songs in the list. Starting batch download...
 
 [1/3] Processing: 女人花
-Found song link: https://www.xmwav.com/mscdetail/133084.html
+Found song link: https://www.xmwsyy.com/mscdetail/133084.html
 Found download button, clicking...
 Downloading '女人花'...
 Song '女人花' has been queued for download
 
 [2/3] Processing: 秋天不回来
-Found song link: https://www.xmwav.com/mscdetail/132980.html
+Found song link: https://www.xmwsyy.com/mscdetail/132980.html
 Found download button, clicking...
 Downloading '秋天不回来'...
 Song '秋天不回来' has been queued for download
 
 [3/3] Processing: 丁香花
-Found song link: https://www.xmwav.com/mscdetail/133066.html
+Found song link: https://www.xmwsyy.com/mscdetail/133066.html
 Found download button, clicking...
 Downloading '丁香花'...
 Song '丁香花' has been queued for download
@@ -44,13 +44,13 @@ Enter the path to the file containing song names (one per line): aaa.txt
 Found 3 songs in the list. Starting batch download...
 
 [1/3] Processing: 女人花
-Found song link: https://www.xmwav.com/mscdetail/133084.html
+Found song link: https://www.xmwsyy.com/mscdetail/133084.html
 Found download button, clicking...
 Downloading '女人花'...
 Song '女人花' has been queued for download
 
 [2/3] Processing: 秋天不回来
-Found song link: https://www.xmwav.com/mscdetail/132980.html
+Found song link: https://www.xmwsyy.com/mscdetail/132980.html
 Found download button, clicking...
 Downloading '秋天不回来'...
 ^C
@@ -105,31 +105,31 @@ Enter the path to the file containing song names (one per line): aaa.txt
 Found 86 songs in the list. Starting batch download...
 
 [1/86] Processing: 天空之城
-Found song link: https://www.xmwav.com/mscdetail/132519.html
+Found song link: https://www.xmwsyy.com/mscdetail/132519.html
 Found download button, clicking...
 Downloading '天空之城'...
 Song '天空之城' has been queued for download
 
 [2/86] Processing: 下辈子如果我还记得你
-Found song link: https://www.xmwav.com/mscdetail/134207.html
+Found song link: https://www.xmwsyy.com/mscdetail/134207.html
 Found download button, clicking...
 Downloading '下辈子如果我还记得你'...
 Song '下辈子如果我还记得你' has been queued for download
 
 [3/86] Processing: 当你孤单你会想起谁
-Found song link: https://www.xmwav.com/mscdetail/134147.html
+Found song link: https://www.xmwsyy.com/mscdetail/134147.html
 Found download button, clicking...
 Downloading '当你孤单你会想起谁'...
 Song '当你孤单你会想起谁' has been queued for download
 
 [4/86] Processing: 分手在那个秋天
-Found song link: https://www.xmwav.com/mscdetail/134426.html
+Found song link: https://www.xmwsyy.com/mscdetail/134426.html
 Found download button, clicking...
 Downloading '分手在那个秋天'...
 Song '分手在那个秋天' has been queued for download
 
 [5/86] Processing: 天使的翅膀
-Found song link: https://www.xmwav.com/mscdetail/132709.html
+Found song link: https://www.xmwsyy.com/mscdetail/132709.html
 Found download button, clicking...
 Downloading '天使的翅膀'...
 Song '天使的翅膀' has been queued for download
@@ -162,13 +162,13 @@ Stacktrace:
 Do you need to log in again? (y/n): n
 
 [7/86] Processing: 有没有人告诉你
-Found song link: https://www.xmwav.com/mscdetail/133729.html
+Found song link: https://www.xmwsyy.com/mscdetail/133729.html
 Found download button, clicking...
 Downloading '有没有人告诉你'...
 Song '有没有人告诉你' has been queued for download
 
 [8/86] Processing: 有一种爱叫做放手
-Found song link: https://www.xmwav.com/mscdetail/134108.html
+Found song link: https://www.xmwsyy.com/mscdetail/134108.html
 Found download button, clicking...
 Downloading '有一种爱叫做放手'...
 Song '有一种爱叫做放手' has been queued for download
@@ -201,127 +201,127 @@ Stacktrace:
 Do you need to log in again? (y/n): n
 
 [10/86] Processing: 青花瓷
-Found song link: https://www.xmwav.com/mscdetail/232.html
+Found song link: https://www.xmwsyy.com/mscdetail/232.html
 Found download button, clicking...
 Downloading '青花瓷'...
 Song '青花瓷' has been queued for download
 
 [11/86] Processing: 千里之外
-Found song link: https://www.xmwav.com/mscdetail/132399.html
+Found song link: https://www.xmwsyy.com/mscdetail/132399.html
 Found download button, clicking...
 Downloading '千里之外'...
 Song '千里之外' has been queued for download
 
 [12/86] Processing: 发如雪
-Found song link: https://www.xmwav.com/mscdetail/132328.html
+Found song link: https://www.xmwsyy.com/mscdetail/132328.html
 Found download button, clicking...
 Downloading '发如雪'...
 Song '发如雪' has been queued for download
 
 [13/86] Processing: 霍元甲
-Found song link: https://www.xmwav.com/mscdetail/132153.html
+Found song link: https://www.xmwsyy.com/mscdetail/132153.html
 Found download button, clicking...
 Downloading '霍元甲'...
 Song '霍元甲' has been queued for download
 
 [14/86] Processing: 曹操
-Found song link: https://www.xmwav.com/mscdetail/132184.html
+Found song link: https://www.xmwsyy.com/mscdetail/132184.html
 Found download button, clicking...
 Downloading '曹操'...
 Song '曹操' has been queued for download
 
 [15/86] Processing: 放生
-Found song link: https://www.xmwav.com/mscdetail/133062.html
+Found song link: https://www.xmwsyy.com/mscdetail/133062.html
 Found download button, clicking...
 Downloading '放生'...
 Song '放生' has been queued for download
 
 [16/86] Processing: 求佛
-Found song link: https://www.xmwav.com/mscdetail/132883.html
+Found song link: https://www.xmwsyy.com/mscdetail/132883.html
 Found download button, clicking...
 Downloading '求佛'...
 Song '求佛' has been queued for download
 
 [17/86] Processing: 生日礼物
-Found song link: https://www.xmwav.com/mscdetail/133064.html
+Found song link: https://www.xmwsyy.com/mscdetail/133064.html
 Found download button, clicking...
 Downloading '生日礼物'...
 Song '生日礼物' has been queued for download
 
 [18/86] Processing: 一直很安静
-Found song link: https://www.xmwav.com/mscdetail/132442.html
+Found song link: https://www.xmwsyy.com/mscdetail/132442.html
 Found download button, clicking...
 Downloading '一直很安静'...
 Song '一直很安静' has been queued for download
 
 [19/86] Processing: 不怕不怕
-Found song link: https://www.xmwav.com/mscdetail/134248.html
+Found song link: https://www.xmwsyy.com/mscdetail/134248.html
 Found download button, clicking...
 Downloading '不怕不怕'...
 Song '不怕不怕' has been queued for download
 
 [20/86] Processing: 爸爸妈妈
-Found song link: https://www.xmwav.com/mscdetail/133496.html
+Found song link: https://www.xmwsyy.com/mscdetail/133496.html
 Found download button, clicking...
 Downloading '爸爸妈妈'...
 Song '爸爸妈妈' has been queued for download
 
 [21/86] Processing: 你到底爱谁
-Found song link: https://www.xmwav.com/mscdetail/133345.html
+Found song link: https://www.xmwsyy.com/mscdetail/133345.html
 Found download button, clicking...
 Downloading '你到底爱谁'...
 Song '你到底爱谁' has been queued for download
 
 [22/86] Processing: 两只蝴蝶
-Found song link: https://www.xmwav.com/mscdetail/133844.html
+Found song link: https://www.xmwsyy.com/mscdetail/133844.html
 Found download button, clicking...
 Downloading '两只蝴蝶'...
 Song '两只蝴蝶' has been queued for download
 
 [23/86] Processing: 红颜
-Found song link: https://www.xmwav.com/mscdetail/132770.html
+Found song link: https://www.xmwsyy.com/mscdetail/132770.html
 Found download button, clicking...
 Downloading '红颜'...
 Song '红颜' has been queued for download
 
 [24/86] Processing: 曾经的你
-Found song link: https://www.xmwav.com/mscdetail/132237.html
+Found song link: https://www.xmwsyy.com/mscdetail/132237.html
 Found download button, clicking...
 Downloading '曾经的你'...
 Song '曾经的你' has been queued for download
 
 [25/86] Processing: 江南
-Found song link: https://www.xmwav.com/mscdetail/132183.html
+Found song link: https://www.xmwsyy.com/mscdetail/132183.html
 Found download button, clicking...
 Downloading '江南'...
 Song '江南' has been queued for download
 
 [26/86] Processing: 东风破
-Found song link: https://www.xmwav.com/mscdetail/222.html
+Found song link: https://www.xmwsyy.com/mscdetail/222.html
 Found download button, clicking...
 Downloading '东风破'...
 Song '东风破' has been queued for download
 
 [27/86] Processing: 离歌
-Found song link: https://www.xmwav.com/mscdetail/133320.html
+Found song link: https://www.xmwsyy.com/mscdetail/133320.html
 Found download button, clicking...
 Downloading '离歌'...
 Song '离歌' has been queued for download
 
 [28/86] Processing: 别说我的眼泪你无所谓
-Found song link: https://www.xmwav.com/mscdetail/133805.html
+Found song link: https://www.xmwsyy.com/mscdetail/133805.html
 Found download button, clicking...
 Downloading '别说我的眼泪你无所谓'...
 Song '别说我的眼泪你无所谓' has been queued for download
 
 [29/86] Processing: 回心转意
-Found song link: https://www.xmwav.com/mscdetail/133769.html
+Found song link: https://www.xmwsyy.com/mscdetail/133769.html
 Found download button, clicking...
 Downloading '回心转意'...
 Song '回心转意' has been queued for download
 
 [30/86] Processing: 在他乡
-Found song link: https://www.xmwav.com/mscdetail/132543.html
+Found song link: https://www.xmwsyy.com/mscdetail/132543.html
 Found download button, clicking...
 Downloading '在他乡'...
 Song '在他乡' has been queued for download
@@ -354,331 +354,331 @@ Stacktrace:
 Do you need to log in again? (y/n): n
 
 [32/86] Processing: 练习
-Found song link: https://www.xmwav.com/mscdetail/132224.html
+Found song link: https://www.xmwsyy.com/mscdetail/132224.html
 Found download button, clicking...
 Downloading '练习'...
 Song '练习' has been queued for download
 
 [33/86] Processing: 痴心绝对
-Found song link: https://www.xmwav.com/mscdetail/133106.html
+Found song link: https://www.xmwsyy.com/mscdetail/133106.html
 Found download button, clicking...
 Downloading '痴心绝对'...
 Song '痴心绝对' has been queued for download
 
 [34/86] Processing: 断点
-Found song link: https://www.xmwav.com/mscdetail/132662.html
+Found song link: https://www.xmwsyy.com/mscdetail/132662.html
 Found download button, clicking...
 Downloading '断点'...
 Song '断点' has been queued for download
 
 [35/86] Processing: 太多
-Found song link: https://www.xmwav.com/mscdetail/133111.html
+Found song link: https://www.xmwsyy.com/mscdetail/133111.html
 Found download button, clicking...
 Downloading '太多'...
 Song '太多' has been queued for download
 
 [36/86] Processing: 爱就爱了
-Found song link: https://www.xmwav.com/mscdetail/133856.html
+Found song link: https://www.xmwsyy.com/mscdetail/133856.html
 Found download button, clicking...
 Downloading '爱就爱了'...
 Song '爱就爱了' has been queued for download
 
 [37/86] Processing: 第一次
-Found song link: https://www.xmwav.com/mscdetail/132573.html
+Found song link: https://www.xmwsyy.com/mscdetail/132573.html
 Found download button, clicking...
 Downloading '第一次'...
 Song '第一次' has been queued for download
 
 [38/86] Processing: 绿光
-Found song link: https://www.xmwav.com/mscdetail/132504.html
+Found song link: https://www.xmwsyy.com/mscdetail/132504.html
 Found download button, clicking...
 Downloading '绿光'...
 Song '绿光' has been queued for download
 
 [39/86] Processing: 唯一
-Found song link: https://www.xmwav.com/mscdetail/145745.html
+Found song link: https://www.xmwsyy.com/mscdetail/145745.html
 Found download button, clicking...
 Downloading '唯一'...
 Song '唯一' has been queued for download
 
 [40/86] Processing: 开始懂了
-Found song link: https://www.xmwav.com/mscdetail/132502.html
+Found song link: https://www.xmwsyy.com/mscdetail/132502.html
 Found download button, clicking...
 Downloading '开始懂了'...
 Song '开始懂了' has been queued for download
 
 [41/86] Processing: 纷飞
-Found song link: https://www.xmwav.com/mscdetail/133238.html
+Found song link: https://www.xmwsyy.com/mscdetail/133238.html
 Found download button, clicking...
 Downloading '纷飞'...
 Song '纷飞' has been queued for download
 
 [42/86] Processing: 一个人的精彩
-Found song link: https://www.xmwav.com/mscdetail/134817.html
+Found song link: https://www.xmwsyy.com/mscdetail/134817.html
 Found download button, clicking...
 Downloading '一个人的精彩'...
 Song '一个人的精彩' has been queued for download
 
 [43/86] Processing: 至少还有你
-Found song link: https://www.xmwav.com/mscdetail/133017.html
+Found song link: https://www.xmwsyy.com/mscdetail/133017.html
 Found download button, clicking...
 Downloading '至少还有你'...
 Song '至少还有你' has been queued for download
 
 [44/86] Processing: 黄昏
-Found song link: https://www.xmwav.com/mscdetail/86.html
+Found song link: https://www.xmwsyy.com/mscdetail/86.html
 Found download button, clicking...
 Downloading '黄昏'...
 Song '黄昏' has been queued for download
 
 [45/86] Processing: 后来
-Found song link: https://www.xmwav.com/mscdetail/132272.html
+Found song link: https://www.xmwsyy.com/mscdetail/132272.html
 Found download button, clicking...
 Downloading '后来'...
 Song '后来' has been queued for download
 
 [46/86] Processing: 单身情歌
-Found song link: https://www.xmwav.com/mscdetail/132320.html
+Found song link: https://www.xmwsyy.com/mscdetail/132320.html
 Found download button, clicking...
 Downloading '单身情歌'...
 Song '单身情歌' has been queued for download
 
 [47/86] Processing: 伤心1999
-Found song link: https://www.xmwav.com/mscdetail/87.html
+Found song link: https://www.xmwsyy.com/mscdetail/87.html
 Found download button, clicking...
 Downloading '伤心1999'...
 Song '伤心1999' has been queued for download
 
 [48/86] Processing: 谢谢你的爱1999
-Found song link: https://www.xmwav.com/mscdetail/132219.html
+Found song link: https://www.xmwsyy.com/mscdetail/132219.html
 Found download button, clicking...
 Downloading '谢谢你的爱1999'...
 Song '谢谢你的爱1999' has been queued for download
 
 [49/86] Processing: 因为爱所以爱
-Found song link: https://www.xmwav.com/mscdetail/132220.html
+Found song link: https://www.xmwsyy.com/mscdetail/132220.html
 Found download button, clicking...
 Downloading '因为爱所以爱'...
 Song '因为爱所以爱' has been queued for download
 
 [50/86] Processing: 你最珍贵
-Found song link: https://www.xmwav.com/mscdetail/134924.html
+Found song link: https://www.xmwsyy.com/mscdetail/134924.html
 Found download button, clicking...
 Downloading '你最珍贵'...
 Song '你最珍贵' has been queued for download
 
 [51/86] Processing: 蒙娜丽莎的眼泪
-Found song link: https://www.xmwav.com/mscdetail/134913.html
+Found song link: https://www.xmwsyy.com/mscdetail/134913.html
 Found download button, clicking...
 Downloading '蒙娜丽莎的眼泪'...
 Song '蒙娜丽莎的眼泪' has been queued for download
 
 [52/86] Processing: 雨蝶
-Found song link: https://www.xmwav.com/mscdetail/132621.html
+Found song link: https://www.xmwsyy.com/mscdetail/132621.html
 Found download button, clicking...
 Downloading '雨蝶'...
 Song '雨蝶' has been queued for download
 
 [53/86] Processing: 月亮惹的祸
-Found song link: https://www.xmwav.com/mscdetail/133076.html
+Found song link: https://www.xmwsyy.com/mscdetail/133076.html
 Found download button, clicking...
 Downloading '月亮惹的祸'...
 Song '月亮惹的祸' has been queued for download
 
 [54/86] Processing: 记事本
-Found song link: https://www.xmwav.com/mscdetail/132457.html
+Found song link: https://www.xmwsyy.com/mscdetail/132457.html
 Found download button, clicking...
 Downloading '记事本'...
 Song '记事本' has been queued for download
 
 [55/86] Processing: 相见恨晚
-Found song link: https://www.xmwav.com/mscdetail/133046.html
+Found song link: https://www.xmwsyy.com/mscdetail/133046.html
 Found download button, clicking...
 Downloading '相见恨晚'...
 Song '相见恨晚' has been queued for download
 
 [56/86] Processing: 懂你
-Found song link: https://www.xmwav.com/mscdetail/134654.html
+Found song link: https://www.xmwsyy.com/mscdetail/134654.html
 Found download button, clicking...
 Downloading '懂你'...
 Song '懂你' has been queued for download
 
 [57/86] Processing: 囚鸟
-Found song link: https://www.xmwav.com/mscdetail/133019.html
+Found song link: https://www.xmwsyy.com/mscdetail/133019.html
 Found download button, clicking...
 Downloading '囚鸟'...
 Song '囚鸟' has been queued for download
 
 [58/86] Processing: 为爱痴狂
-Found song link: https://www.xmwav.com/mscdetail/132194.html
+Found song link: https://www.xmwsyy.com/mscdetail/132194.html
 Found download button, clicking...
 Downloading '为爱痴狂'...
 Song '为爱痴狂' has been queued for download
 
 [59/86] Processing: 梦里水乡
-Found song link: https://www.xmwav.com/mscdetail/132646.html
+Found song link: https://www.xmwsyy.com/mscdetail/132646.html
 Found download button, clicking...
 Downloading '梦里水乡'...
 Song '梦里水乡' has been queued for download
 
 [60/86] Processing: 爱我的人和我爱的人
-Found song link: https://www.xmwav.com/mscdetail/132561.html
+Found song link: https://www.xmwsyy.com/mscdetail/132561.html
 Found download button, clicking...
 Downloading '爱我的人和我爱的人'...
 Song '爱我的人和我爱的人' has been queued for download
 
 [61/86] Processing: 爱如潮水
-Found song link: https://www.xmwav.com/mscdetail/132818.html
+Found song link: https://www.xmwsyy.com/mscdetail/132818.html
 Found download button, clicking...
 Downloading '爱如潮水'...
 Song '爱如潮水' has been queued for download
 
 [62/86] Processing: 吻别
-Found song link: https://www.xmwav.com/mscdetail/132524.html
+Found song link: https://www.xmwsyy.com/mscdetail/132524.html
 Found download button, clicking...
 Downloading '吻别'...
 Song '吻别' has been queued for download
 
 [63/86] Processing: 轻轻的告诉你
-Found song link: https://www.xmwav.com/mscdetail/135141.html
+Found song link: https://www.xmwsyy.com/mscdetail/135141.html
 Found download button, clicking...
 Downloading '轻轻的告诉你'...
 Song '轻轻的告诉你' has been queued for download
 
 [64/86] Processing: 大海
-Found song link: https://www.xmwav.com/mscdetail/157.html
+Found song link: https://www.xmwsyy.com/mscdetail/157.html
 Found download button, clicking...
 Downloading '大海'...
 Song '大海' has been queued for download
 
 [65/86] Processing: 一起走过的日子
-Found song link: https://www.xmwav.com/mscdetail/134101.html
+Found song link: https://www.xmwsyy.com/mscdetail/134101.html
 Found download button, clicking...
 Downloading '一起走过的日子'...
 Song '一起走过的日子' has been queued for download
 
 [66/86] Processing: 护花使者
-Found song link: https://www.xmwav.com/mscdetail/132200.html
+Found song link: https://www.xmwsyy.com/mscdetail/132200.html
 Found download button, clicking...
 Downloading '护花使者'...
 Song '护花使者' has been queued for download
 
 [67/86] Processing: 潇洒走一回
-Found song link: https://www.xmwav.com/mscdetail/133169.html
+Found song link: https://www.xmwsyy.com/mscdetail/133169.html
 Found download button, clicking...
 Downloading '潇洒走一回'...
 Song '潇洒走一回' has been queued for download
 
 [68/86] Processing: 特别的爱给特别的你
-Found song link: https://www.xmwav.com/mscdetail/133492.html
+Found song link: https://www.xmwsyy.com/mscdetail/133492.html
 Found download button, clicking...
 Downloading '特别的爱给特别的你'...
 Song '特别的爱给特别的你' has been queued for download
 
 [69/86] Processing: 千千阙歌
-Found song link: https://www.xmwav.com/mscdetail/132207.html
+Found song link: https://www.xmwsyy.com/mscdetail/132207.html
 Found download button, clicking...
 Downloading '千千阙歌'...
 Song '千千阙歌' has been queued for download
 
 [70/86] Processing: 难得有情人
-Found song link: https://www.xmwav.com/mscdetail/133120.html
+Found song link: https://www.xmwsyy.com/mscdetail/133120.html
 Found download button, clicking...
 Downloading '难得有情人'...
 Song '难得有情人' has been queued for download
 
 [71/86] Processing: 你的样子
-Found song link: https://www.xmwav.com/mscdetail/132321.html
+Found song link: https://www.xmwsyy.com/mscdetail/132321.html
 Found download button, clicking...
 Downloading '你的样子'...
 Song '你的样子' has been queued for download
 
 [72/86] Processing: 浮夸
-Found song link: https://www.xmwav.com/mscdetail/132541.html
+Found song link: https://www.xmwsyy.com/mscdetail/132541.html
 Found download button, clicking...
 Downloading '浮夸'...
 Song '浮夸' has been queued for download
 
 [73/86] Processing: 难念的经
-Found song link: https://www.xmwav.com/mscdetail/132459.html
+Found song link: https://www.xmwsyy.com/mscdetail/132459.html
 Found download button, clicking...
 Downloading '难念的经'...
 Song '难念的经' has been queued for download
 
 [74/86] Processing: Nobody
-Found song link: https://www.xmwav.com/mscdetail/132628.html
+Found song link: https://www.xmwsyy.com/mscdetail/132628.html
 Found download button, clicking...
 Downloading 'Nobody'...
 Song 'Nobody' has been queued for download
 
 [75/86] Processing: beat it
-Found song link: https://www.xmwav.com/mscdetail/132837.html
+Found song link: https://www.xmwsyy.com/mscdetail/132837.html
 Found download button, clicking...
 Downloading 'beat it'...
 Song 'beat it' has been queued for download
 
 [76/86] Processing: 曾经最美
-Found song link: https://www.xmwav.com/mscdetail/133834.html
+Found song link: https://www.xmwsyy.com/mscdetail/133834.html
 Found download button, clicking...
 Downloading '曾经最美'...
 Song '曾经最美' has been queued for download
 
 [77/86] Processing: 我的麦克风
-Found song link: https://www.xmwav.com/mscdetail/140582.html
+Found song link: https://www.xmwsyy.com/mscdetail/140582.html
 Found download button, clicking...
 Downloading '我的麦克风'...
 Song '我的麦克风' has been queued for download
 
 [78/86] Processing: 遇见
-Found song link: https://www.xmwav.com/mscdetail/210.html
+Found song link: https://www.xmwsyy.com/mscdetail/210.html
 Found download button, clicking...
 Downloading '遇见'...
 Song '遇见' has been queued for download
 
 [79/86] Processing: 心爱
-Found song link: https://www.xmwav.com/mscdetail/134067.html
+Found song link: https://www.xmwsyy.com/mscdetail/134067.html
 Found download button, clicking...
 Downloading '心爱'...
 Song '心爱' has been queued for download
 
 [80/86] Processing: 晴天
-Found song link: https://www.xmwav.com/mscdetail/190.html
+Found song link: https://www.xmwsyy.com/mscdetail/190.html
 Found download button, clicking...
 Downloading '晴天'...
 Song '晴天' has been queued for download
 
 [81/86] Processing: 下一站天后
-Found song link: https://www.xmwav.com/mscdetail/132579.html
+Found song link: https://www.xmwsyy.com/mscdetail/132579.html
 Found download button, clicking...
 Downloading '下一站天后'...
 Song '下一站天后' has been queued for download
 
 [82/86] Processing: 挥着翅膀的女孩
-Found song link: https://www.xmwav.com/mscdetail/133963.html
+Found song link: https://www.xmwsyy.com/mscdetail/133963.html
 Found download button, clicking...
 Downloading '挥着翅膀的女孩'...
 Song '挥着翅膀的女孩' has been queued for download
 
 [83/86] Processing: 爱情诺曼底
-Found song link: https://www.xmwav.com/mscdetail/134367.html
+Found song link: https://www.xmwsyy.com/mscdetail/134367.html
 Found download button, clicking...
 Downloading '爱情诺曼底'...
 Song '爱情诺曼底' has been queued for download
 
 [84/86] Processing: 暗香
-Found song link: https://www.xmwav.com/mscdetail/133204.html
+Found song link: https://www.xmwsyy.com/mscdetail/133204.html
 Found download button, clicking...
 Downloading '暗香'...
 Song '暗香' has been queued for download
 
 [85/86] Processing: 当你
-Found song link: https://www.xmwav.com/mscdetail/132816.html
+Found song link: https://www.xmwsyy.com/mscdetail/132816.html
 Found download button, clicking...
 Downloading '当你'...
 Song '当你' has been queued for download
 
 [86/86] Processing: 七月七日晴
-Found song link: https://www.xmwav.com/mscdetail/132685.html
+Found song link: https://www.xmwsyy.com/mscdetail/132685.html
 Found download button, clicking...
 Downloading '七月七日晴'...
 Song '七月七日晴' has been queued for download
