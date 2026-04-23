@@ -4,17 +4,25 @@
 复用 download_v8.py 的下载逻辑,封装为 MCP 工具供 Claude Desktop 调用。
 - 搜索/榜单/分类/最新 等查询: 纯 curl + 正则,无浏览器开销
 - 单曲/批量 下载: 复用 selenium driver 单例 (保持夸克网盘登录态)
+
+启动时在后台线程自动打开 Chrome 并导航到夸克网盘,等待用户登录。
+浏览器初始化不会阻塞 MCP 主循环,所以 stdio 通信一直可用。
 """
 import io
 import os
+import pickle
 import re
 import sys
 import subprocess
 import threading
+import time
 from contextlib import redirect_stdout, redirect_stderr
 from pathlib import Path
 from typing import List, Optional
 from urllib.parse import urljoin
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 from mcp.server.fastmcp import FastMCP
 
@@ -40,7 +48,63 @@ TREND_PATH = "/trendsong/wk.html"
 
 _driver = None
 _driver_lock = threading.Lock()
+_driver_ready = threading.Event()
+_driver_init_error: Optional[str] = None
 _download_folder = str(PROJECT_DIR / "downloads")
+_cookies_file = str(PROJECT_DIR / "quark_cookies.pkl")
+
+
+def _init_browser_no_input(download_folder: str):
+    """Start Chrome, load Quark cookies if present, open pan.quark.cn.
+
+    Unlike download_v8.initialize_browser, this does NOT call input() —
+    MCP stdio has no tty, so input() would hang forever. User logs in
+    manually in the opened Chrome window; call save_quark_cookies once
+    done so the session persists.
+
+    Also disables any system proxy so traffic goes direct.
+    """
+    os.makedirs(download_folder, exist_ok=True)
+
+    chrome_options = Options()
+    chrome_options.add_argument("--window-size=1920,1080")
+    # 不走代理 (系统代理也忽略)
+    chrome_options.add_argument("--no-proxy-server")
+    chrome_options.add_argument("--proxy-server=direct://")
+    chrome_options.add_argument("--proxy-bypass-list=*")
+    prefs = {"download.default_directory": os.path.abspath(download_folder)}
+    chrome_options.add_experimental_option("prefs", prefs)
+
+    driver = webdriver.Chrome(options=chrome_options)
+
+    driver.get("https://pan.quark.cn/")
+    if os.path.exists(_cookies_file):
+        try:
+            cookies = pickle.load(open(_cookies_file, "rb"))
+            for cookie in cookies:
+                try:
+                    driver.add_cookie(cookie)
+                except Exception:
+                    pass
+            driver.refresh()
+        except Exception:
+            pass
+    return driver
+
+
+def _background_init():
+    """Runs once at module load in a daemon thread."""
+    global _driver, _driver_init_error
+    try:
+        buf = io.StringIO()
+        with redirect_stdout(buf), redirect_stderr(buf):
+            driver = _init_browser_no_input(_download_folder)
+        with _driver_lock:
+            _driver = driver
+    except Exception as e:
+        _driver_init_error = f"{type(e).__name__}: {e}"
+    finally:
+        _driver_ready.set()
 
 
 def _curl_get(url: str, timeout: int = 15) -> str:
@@ -95,14 +159,22 @@ def _format_song_list(songs: List[dict], header: str) -> str:
     return "\n".join(lines)
 
 
-def _get_driver():
-    """Lazy-init the selenium driver. Reused across calls so login persists."""
-    global _driver
+def _get_driver(wait_timeout: int = 60):
+    """Return the selenium driver, waiting for background init if needed.
+
+    If init failed, re-tries inline (may still hit the same error).
+    Never calls input() — assumes user already logged in the window.
+    """
+    global _driver, _driver_init_error
+    if not _driver_ready.wait(timeout=wait_timeout):
+        raise RuntimeError(f"浏览器初始化超时 (>{wait_timeout}s),请检查 Chrome 是否能正常启动")
     with _driver_lock:
-        if _driver is None:
-            buf = io.StringIO()
-            with redirect_stdout(buf), redirect_stderr(buf):
-                _driver = download_v8.initialize_browser(_download_folder)
+        if _driver is not None:
+            return _driver
+        buf = io.StringIO()
+        with redirect_stdout(buf), redirect_stderr(buf):
+            _driver = _init_browser_no_input(_download_folder)
+        _driver_init_error = None
         return _driver
 
 
@@ -389,7 +461,50 @@ async def close_browser() -> str:
             _driver = None
             return f"关闭时出现异常: {e}"
         _driver = None
+        _driver_ready.clear()
         return "浏览器已关闭"
+
+
+@mcp.tool()
+async def browser_status() -> str:
+    """查询浏览器 / 夸克登录状态。首次使用前务必确认已登录。"""
+    if not _driver_ready.is_set():
+        return "浏览器仍在启动中..."
+    if _driver_init_error:
+        return f"浏览器初始化失败: {_driver_init_error}"
+    with _driver_lock:
+        if _driver is None:
+            return "浏览器未启动"
+        try:
+            url = _driver.current_url
+            title = _driver.title
+        except Exception as e:
+            return f"浏览器已断开: {e}"
+    cookies_exist = os.path.exists(_cookies_file)
+    return (
+        f"浏览器运行中\n当前页: {title}\nURL: {url}\n"
+        f"Cookies 文件: {'存在' if cookies_exist else '不存在 (请登录后调用 save_quark_cookies)'}"
+    )
+
+
+@mcp.tool()
+async def save_quark_cookies() -> str:
+    """在夸克网盘完成手动登录后调用此工具,把 cookies 存盘以便下次复用。"""
+    if not _driver_ready.is_set():
+        return "浏览器尚未就绪"
+    with _driver_lock:
+        if _driver is None:
+            return "浏览器未启动"
+        try:
+            cookies = _driver.get_cookies()
+            pickle.dump(cookies, open(_cookies_file, "wb"))
+        except Exception as e:
+            return f"保存 cookies 失败: {e}"
+    return f"已保存 {len(cookies)} 条 cookies 到 {_cookies_file}"
+
+
+# 启动时立刻在后台线程打开浏览器 + 加载夸克,不阻塞 MCP 主循环
+threading.Thread(target=_background_init, name="browser-init", daemon=True).start()
 
 
 if __name__ == "__main__":
