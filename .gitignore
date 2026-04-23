@@ -1,3 +1,6 @@
 quark_cookies.pkl
 downloads/
 *.pyc
+chrome-profile/
+mcp_stderr.log
+

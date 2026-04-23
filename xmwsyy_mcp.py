@@ -3,15 +3,16 @@
 
 复用 download_v8.py 的下载逻辑,封装为 MCP 工具供 Claude Desktop 调用。
 - 搜索/榜单/分类/最新 等查询: 纯 curl + 正则,无浏览器开销
-- 单曲/批量 下载: 复用 selenium driver 单例 (保持夸克网盘登录态)
-
-启动时在后台线程自动打开 Chrome 并导航到夸克网盘,等待用户登录。
-浏览器初始化不会阻塞 MCP 主循环,所以 stdio 通信一直可用。
+- 单曲/批量 下载: 通过 CDP (remote-debugging-port) 附着到一个独立启动的
+  Chrome 实例。Chrome 由 macOS `open -na` 启动,脱离 Claude Desktop 的
+  进程树/沙箱,所以不会被只读文件系统拦住,也不会因 MCP 重启而丢失登录态。
+  user-data-dir 在项目目录里,登录态自动保留,不再需要 pickle cookies。
 """
 import io
 import os
 import pickle
 import re
+import socket
 import sys
 import subprocess
 import threading
@@ -28,6 +29,37 @@ from mcp.server.fastmcp import FastMCP
 
 PROJECT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(PROJECT_DIR))
+
+# Claude Desktop 启动 MCP 时 cwd 可能是只读的 `/`,切到项目目录以防 download_v8
+# 里的相对路径 (quark_cookies.pkl, error_screenshot.png) 写失败。
+try:
+    os.chdir(PROJECT_DIR)
+except Exception:
+    pass
+
+# 把 stderr 同时写到文件,Claude Desktop 的日志只收实时 stderr,但 Chrome 启动
+# 过程可能已在我们能写日志之前就把进程弄崩。落盘方便排错。
+_log_file_path = PROJECT_DIR / "mcp_stderr.log"
+try:
+    _log_fp = open(_log_file_path, "a", buffering=1)
+    _log_fp.write(f"\n--- MCP start @ {time.strftime('%Y-%m-%d %H:%M:%S')} pid={os.getpid()} ---\n")
+except Exception:
+    _log_fp = None
+
+
+def _log(msg: str) -> None:
+    line = f"[{time.strftime('%H:%M:%S')}] {msg}\n"
+    try:
+        sys.stderr.write(line)
+        sys.stderr.flush()
+    except Exception:
+        pass
+    if _log_fp is not None:
+        try:
+            _log_fp.write(line)
+        except Exception:
+            pass
+
 
 import download_v8
 
@@ -53,56 +85,104 @@ _driver_init_error: Optional[str] = None
 _download_folder = str(PROJECT_DIR / "downloads")
 _cookies_file = str(PROJECT_DIR / "quark_cookies.pkl")
 
+CHROME_DEBUG_PORT = 9222
+CHROME_USER_DATA_DIR = str(PROJECT_DIR / "chrome-profile")
+CHROME_APP = "Google Chrome"
 
-def _init_browser_no_input(download_folder: str):
-    """Start Chrome, load Quark cookies if present, open pan.quark.cn.
 
-    Unlike download_v8.initialize_browser, this does NOT call input() —
-    MCP stdio has no tty, so input() would hang forever. User logs in
-    manually in the opened Chrome window; call save_quark_cookies once
-    done so the session persists.
+def _port_open(host: str, port: int, timeout: float = 0.5) -> bool:
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except (ConnectionRefusedError, socket.timeout, OSError):
+        return False
 
-    Also disables any system proxy so traffic goes direct.
+
+def _wait_for_port(port: int, timeout: float = 45.0) -> bool:
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        if _port_open("127.0.0.1", port):
+            return True
+        time.sleep(0.5)
+    return False
+
+
+def _launch_detached_chrome():
+    """Launch Chrome as an independent macOS app via `open -na`.
+
+    Using `open` hands the process off to launchd, so Chrome is NOT a child
+    of this MCP process and inherits no sandbox/cwd restrictions from
+    Claude Desktop. A dedicated user-data-dir keeps cookies/session
+    persistent across MCP restarts.
     """
-    os.makedirs(download_folder, exist_ok=True)
+    os.makedirs(CHROME_USER_DATA_DIR, exist_ok=True)
+    os.makedirs(_download_folder, exist_ok=True)
+    args = [
+        "open", "-na", CHROME_APP, "--args",
+        f"--remote-debugging-port={CHROME_DEBUG_PORT}",
+        f"--user-data-dir={CHROME_USER_DATA_DIR}",
+        "--window-size=1920,1080",
+        # 不走代理
+        "--no-proxy-server",
+        "--proxy-server=direct://",
+        "--proxy-bypass-list=*",
+        "https://pan.quark.cn/",
+    ]
+    _log(f"launching detached chrome: {' '.join(args)}")
+    subprocess.Popen(
+        args,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True,
+    )
 
+
+def _connect_to_chrome():
+    """Attach Selenium to the already-running Chrome via CDP."""
     chrome_options = Options()
-    chrome_options.add_argument("--window-size=1920,1080")
-    # 不走代理 (系统代理也忽略)
-    chrome_options.add_argument("--no-proxy-server")
-    chrome_options.add_argument("--proxy-server=direct://")
-    chrome_options.add_argument("--proxy-bypass-list=*")
-    prefs = {"download.default_directory": os.path.abspath(download_folder)}
+    chrome_options.add_experimental_option(
+        "debuggerAddress", f"127.0.0.1:{CHROME_DEBUG_PORT}"
+    )
+    prefs = {"download.default_directory": os.path.abspath(_download_folder)}
     chrome_options.add_experimental_option("prefs", prefs)
-
-    driver = webdriver.Chrome(options=chrome_options)
-
-    driver.get("https://pan.quark.cn/")
-    if os.path.exists(_cookies_file):
-        try:
-            cookies = pickle.load(open(_cookies_file, "rb"))
-            for cookie in cookies:
-                try:
-                    driver.add_cookie(cookie)
-                except Exception:
-                    pass
-            driver.refresh()
-        except Exception:
-            pass
-    return driver
+    return webdriver.Chrome(options=chrome_options)
 
 
 def _background_init():
     """Runs once at module load in a daemon thread."""
     global _driver, _driver_init_error
     try:
-        buf = io.StringIO()
-        with redirect_stdout(buf), redirect_stderr(buf):
-            driver = _init_browser_no_input(_download_folder)
+        if not _port_open("127.0.0.1", CHROME_DEBUG_PORT):
+            _launch_detached_chrome()
+            if not _wait_for_port(CHROME_DEBUG_PORT, timeout=45):
+                _driver_init_error = (
+                    f"Chrome 调试端口 {CHROME_DEBUG_PORT} 在 45s 内未就绪。"
+                    f"请检查 Chrome 是否安装在 /Applications/Google Chrome.app,"
+                    f"或手动执行: open -na 'Google Chrome' --args "
+                    f"--remote-debugging-port={CHROME_DEBUG_PORT} "
+                    f"--user-data-dir={CHROME_USER_DATA_DIR}"
+                )
+                _log(_driver_init_error)
+                return
+        else:
+            _log(f"port {CHROME_DEBUG_PORT} already open, reusing existing Chrome")
+
+        driver = _connect_to_chrome()
         with _driver_lock:
             _driver = driver
+        _log("selenium attached to chrome successfully")
+        # 首次启动时 Chrome 可能停在 chrome://intro/, 导航到夸克网盘方便用户登录
+        try:
+            cur = driver.current_url or ""
+            if not cur.startswith("https://pan.quark.cn"):
+                driver.get("https://pan.quark.cn/")
+                _log("navigated to pan.quark.cn")
+        except Exception as e:
+            _log(f"navigate to quark failed (non-fatal): {e}")
     except Exception as e:
         _driver_init_error = f"{type(e).__name__}: {e}"
+        _log(f"background init failed: {_driver_init_error}")
     finally:
         _driver_ready.set()
 
@@ -159,21 +239,30 @@ def _format_song_list(songs: List[dict], header: str) -> str:
     return "\n".join(lines)
 
 
-def _get_driver(wait_timeout: int = 60):
+def _get_driver(wait_timeout: int = 90):
     """Return the selenium driver, waiting for background init if needed.
 
-    If init failed, re-tries inline (may still hit the same error).
-    Never calls input() — assumes user already logged in the window.
+    If init failed, retries inline: re-launches Chrome (if port closed) and
+    re-attaches. Never calls input().
     """
     global _driver, _driver_init_error
     if not _driver_ready.wait(timeout=wait_timeout):
-        raise RuntimeError(f"浏览器初始化超时 (>{wait_timeout}s),请检查 Chrome 是否能正常启动")
+        raise RuntimeError(
+            f"浏览器初始化超时 (>{wait_timeout}s)。"
+            f"如果你在第一次使用,请确认 /Applications/Google Chrome.app 存在,"
+            f"也可以查看日志: {_log_file_path}"
+        )
     with _driver_lock:
         if _driver is not None:
             return _driver
-        buf = io.StringIO()
-        with redirect_stdout(buf), redirect_stderr(buf):
-            _driver = _init_browser_no_input(_download_folder)
+        # 后台初始化失败,重试
+        if not _port_open("127.0.0.1", CHROME_DEBUG_PORT):
+            _launch_detached_chrome()
+            if not _wait_for_port(CHROME_DEBUG_PORT, timeout=30):
+                raise RuntimeError(
+                    f"Chrome 调试端口 {CHROME_DEBUG_PORT} 未就绪。先前错误: {_driver_init_error}"
+                )
+        _driver = _connect_to_chrome()
         _driver_init_error = None
         return _driver
 
@@ -450,46 +539,68 @@ async def batch_download_from_file(file_path: str) -> str:
 
 @mcp.tool()
 async def close_browser() -> str:
-    """关闭 selenium 浏览器实例 (释放资源,下次下载会重新启动)。"""
+    """断开 selenium 与 Chrome 的连接 (不会关闭 Chrome 窗口本身,登录态保留)。"""
     global _driver
     with _driver_lock:
         if _driver is None:
-            return "浏览器未启动"
+            return "selenium 未连接到 Chrome"
         try:
             _driver.quit()
         except Exception as e:
             _driver = None
-            return f"关闭时出现异常: {e}"
+            return f"断开时异常: {e}"
         _driver = None
         _driver_ready.clear()
-        return "浏览器已关闭"
+        return "selenium 已断开 (Chrome 窗口仍在运行,可再次调用其它工具触发重连)"
 
 
 @mcp.tool()
 async def browser_status() -> str:
-    """查询浏览器 / 夸克登录状态。首次使用前务必确认已登录。"""
-    if not _driver_ready.is_set():
-        return "浏览器仍在启动中..."
+    """查询 Chrome / selenium 当前状态。首次使用前确认已在 Chrome 里登录夸克。"""
+    port_up = _port_open("127.0.0.1", CHROME_DEBUG_PORT)
+    ready = _driver_ready.is_set()
+    lines = [
+        f"Chrome 调试端口 ({CHROME_DEBUG_PORT}): {'已开放' if port_up else '未开放'}",
+        f"后台初始化: {'已完成' if ready else '进行中'}",
+    ]
     if _driver_init_error:
-        return f"浏览器初始化失败: {_driver_init_error}"
+        lines.append(f"初始化错误: {_driver_init_error}")
     with _driver_lock:
         if _driver is None:
-            return "浏览器未启动"
-        try:
-            url = _driver.current_url
-            title = _driver.title
-        except Exception as e:
-            return f"浏览器已断开: {e}"
-    cookies_exist = os.path.exists(_cookies_file)
-    return (
-        f"浏览器运行中\n当前页: {title}\nURL: {url}\n"
-        f"Cookies 文件: {'存在' if cookies_exist else '不存在 (请登录后调用 save_quark_cookies)'}"
-    )
+            lines.append("Selenium 未附着")
+        else:
+            try:
+                lines.append(f"当前页: {_driver.title}")
+                lines.append(f"URL: {_driver.current_url}")
+            except Exception as e:
+                lines.append(f"Selenium 连接已失效: {e}")
+    lines.append(f"用户数据目录: {CHROME_USER_DATA_DIR}")
+    lines.append(f"日志文件: {_log_file_path}")
+    return "\n".join(lines)
+
+
+@mcp.tool()
+async def relaunch_chrome() -> str:
+    """如果 Chrome 没起来,手动触发一次启动 (独立进程,脱离 MCP 沙箱)。"""
+    global _driver, _driver_init_error
+    if _port_open("127.0.0.1", CHROME_DEBUG_PORT):
+        return f"Chrome 调试端口已开放,无需重启。调 browser_status 查看详情。"
+    try:
+        _launch_detached_chrome()
+    except Exception as e:
+        return f"启动 Chrome 失败: {e}"
+    if not _wait_for_port(CHROME_DEBUG_PORT, timeout=30):
+        return f"已发出启动命令,但 30s 内端口 {CHROME_DEBUG_PORT} 仍未就绪。请查看日志 {_log_file_path}"
+    with _driver_lock:
+        _driver = _connect_to_chrome()
+        _driver_init_error = None
+        _driver_ready.set()
+    return f"Chrome 已启动并附着成功 (user-data-dir={CHROME_USER_DATA_DIR})"
 
 
 @mcp.tool()
 async def save_quark_cookies() -> str:
-    """在夸克网盘完成手动登录后调用此工具,把 cookies 存盘以便下次复用。"""
+    """保存 Chrome 当前的 cookies 到 pkl 文件 (可选,user-data-dir 本身已持久化登录态)。"""
     if not _driver_ready.is_set():
         return "浏览器尚未就绪"
     with _driver_lock:
@@ -503,7 +614,7 @@ async def save_quark_cookies() -> str:
     return f"已保存 {len(cookies)} 条 cookies 到 {_cookies_file}"
 
 
-# 启动时立刻在后台线程打开浏览器 + 加载夸克,不阻塞 MCP 主循环
+# 启动时立刻在后台线程打开独立的 Chrome,不阻塞 MCP 主循环
 threading.Thread(target=_background_init, name="browser-init", daemon=True).start()
 
 
