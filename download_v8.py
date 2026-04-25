@@ -4,10 +4,16 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
 import pickle
 import subprocess
+
+# Ensure ChromeDriver (localhost) connections bypass any HTTP proxy
+os.environ["no_proxy"] = os.environ.get("no_proxy", "") + ",127.0.0.1,localhost"
+os.environ["NO_PROXY"] = os.environ.get("NO_PROXY", "") + ",127.0.0.1,localhost"
 import re
 
 def get_download_links_with_curl(detail_url):
@@ -66,7 +72,8 @@ def initialize_browser(download_folder="downloads"):
     chrome_options.add_experimental_option("prefs", prefs)
     
     # Initialize the Chrome driver
-    driver = webdriver.Chrome(options=chrome_options)
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     
     # Load cookies if they exist
     cookies_file = "quark_cookies.pkl"
